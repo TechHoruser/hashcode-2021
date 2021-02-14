@@ -9,7 +9,7 @@ class ManagerFile:
     OUTPUT_PATH = "./data/out/"
     OUTPUT_EXTENSION = ".out"
     ELEMENT_TYPE_FIRST_LINE = int
-    ELEMENT_TYPE_OTHER_LINES = int
+    ELEMENT_TYPE_OTHER_LINES = str
 
     def __init__(self, fileName):
         self.__fileName = fileName
@@ -21,7 +21,7 @@ class ManagerFile:
             content = f.readlines()
 
         return [
-            numpy.array((line.replace("\n", "")).split(separator))
+            numpy.array((line.replace("\n", "")).strip().split(separator))
             .astype(
                 ManagerFile.ELEMENT_TYPE_FIRST_LINE
                 if idx == 0
