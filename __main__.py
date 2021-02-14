@@ -3,10 +3,10 @@ from manager_file import ManagerFile
 
 examples = [
     {"fileName": "a_example", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "b_small", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "c_medium", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "d_quite_big", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "e_also_big", "algorithm": BaseAlgorithms.basic,},
+    {"fileName": "b_little_bit_of_everything", "algorithm": BaseAlgorithms.basic,},
+    {"fileName": "c_many_ingredients", "algorithm": BaseAlgorithms.basic,},
+    {"fileName": "d_many_pizzas", "algorithm": BaseAlgorithms.basic,},
+    {"fileName": "e_many_teams", "algorithm": BaseAlgorithms.basic,},
 ]
 
 
