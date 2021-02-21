@@ -10,6 +10,7 @@ class ManagerFile:
     OUTPUT_EXTENSION = ".out"
     ELEMENT_TYPE_FIRST_LINE = int
     ELEMENT_TYPE_OTHER_LINES = str
+    FIRST_ROW_OF_ELEMENT = 1
 
     def __init__(self, fileName):
         self.__fileName = fileName
