@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 numpy = "*"
+typing = "*"
+pydantic = "*"
 
 [dev-packages]
 pylint = "*"

@@ -1,34 +1,62 @@
 from datetime import datetime
-from algorithms import BaseAlgorithms
-from manager_file import ManagerFile
+from pipeline.pipeline import Pipeline, SubPipeline
+from pipeline.global_algoritm_params import GlobalAlgoritmParams
+from pipeline.algorithms.load_file import LoadFile
+from pipeline.algorithms.set_new_subgroup_process_data import SetNewSubgroupProcess
+from pipeline.algorithms.save_file import SaveFile
+from pipeline.algorithms.load_encoded_file import LoadEncodedFile
+from pipeline.algorithms.encode_data import EncodeData
+from pipeline.algorithms.save_encoded_data_to_file import SaveEncodedDataToFile
+from pipeline.algorithms.basic import Basic
 
-examples = [
-    {"fileName": "a_example", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "b_little_bit_of_everything", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "c_many_ingredients", "algorithm": BaseAlgorithms.basic,},
-    {"fileName": "d_many_pizzas", "algorithm": BaseAlgorithms.subgroup_process, "algorithm_params": [BaseAlgorithms.basic, .05],},
-    {"fileName": "e_many_teams", "algorithm": BaseAlgorithms.subgroup_process, "algorithm_params": [BaseAlgorithms.basic, .05],},
+load_pipeline = SubPipeline(
+    [
+        LoadEncodedFile,
+        SubPipeline([LoadFile, EncodeData, SaveEncodedDataToFile])
+    ], True
+)
+
+pipelines = [
+    Pipeline([
+        load_pipeline,
+        Basic,
+        SaveFile,
+    ], GlobalAlgoritmParams(filename = "a_example")),
+    Pipeline([
+        load_pipeline,
+        Basic,
+        SaveFile,
+    ], GlobalAlgoritmParams(filename = "b_little_bit_of_everything")),
+    Pipeline([
+        load_pipeline,
+        Basic,
+        SaveFile,
+    ], GlobalAlgoritmParams(filename = "c_many_ingredients")),
+    Pipeline([
+        load_pipeline,
+        Basic,
+        SaveFile,
+    ], GlobalAlgoritmParams(filename = "d_many_pizzas")),
+    Pipeline([
+        load_pipeline,
+        SetNewSubgroupProcess,
+        Basic,
+        SaveFile,
+    ], GlobalAlgoritmParams(filename = "e_many_teams", test_group_percent=.1)),
 ]
 
 
-for indx, example in enumerate(examples):
+for indx, pipeline in enumerate(pipelines):
     start_datetime = datetime.now()
     print(
         "Processing file:",
-        example["fileName"],
-        "(" + str(indx + 1) + "/" + str(len(examples)) + ")",
+        pipeline.global_algorithm_params.filename,
+        "(" + str(indx + 1) + "/" + str(len(pipelines)) + ")",
         flush=False,
     )
     print("Start at: %s" % start_datetime.strftime('%H:%M:%S'))
-    mf = ManagerFile(example["fileName"])
-    input_array = mf.loadFile()
-
-    if 'algorithm_params' in example:
-        output = example["algorithm"](input_array, *example['algorithm_params'])
-    else:
-        output = example["algorithm"](input_array)
+    
+    pipeline.execute()
 
     end_datetime = datetime.now()
     print("End at: %s (%s)" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)))
-
-    mf.saveFile([len(output)] + output)

@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "venv/bin/python",
+    "python.pythonPath": "/Users/fjponce/.local/share/virtualenvs/hashcode-2021-3TYjv4Aa/bin/python",
     "python.formatting.provider": "black"
 }
