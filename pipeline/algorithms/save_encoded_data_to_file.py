@@ -8,7 +8,7 @@ class SaveEncodedDataToFile(PipelineAlgorithmInterface):
 
     @classmethod
     def execute(cls, global_params: GlobalAlgoritmParams):
-        data_to_export = global_params.data_without_encode + global_params.data_to_process
+        data_to_export = global_params.data_to_process
 
         data = [
             " ".join(numpy.array(element).astype(str).tolist())

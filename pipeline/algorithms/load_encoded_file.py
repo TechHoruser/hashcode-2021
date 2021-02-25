@@ -7,7 +7,7 @@ class LoadEncodedFile(PipelineAlgorithmInterface):
     INPUT_EXTENSION = ".encoded"
     SEPARATOR = " "
     ELEMENT_TYPE_FIRST_LINE = int
-    ELEMENT_TYPE_OTHER_LINES = str
+    ELEMENT_TYPE_OTHER_LINES = int
 
     @classmethod
     def execute(cls, global_params: GlobalAlgoritmParams):

@@ -39,7 +39,7 @@ pipelines = [
     ], GlobalAlgoritmParams(filename = "d_many_pizzas")),
     Pipeline([
         load_pipeline,
-        SetNewSubgroupProcess,
+        # SetNewSubgroupProcess,
         Basic,
         SaveFile,
     ], GlobalAlgoritmParams(filename = "e_many_teams", test_group_percent=.1)),

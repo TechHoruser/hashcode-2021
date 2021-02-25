@@ -4,10 +4,13 @@ from pipeline.algorithms.load_file import LoadFile
 from pipeline.global_algoritm_params import GlobalAlgoritmParams
 
 class EncodeData(PipelineAlgorithmInterface):
+
+    FIRST_COLUMN_TO_ENCODE = 1
+
     @classmethod
     def execute(cls, global_params: GlobalAlgoritmParams):
         number_of_threads = global_params.number_of_threads
-        input_array = global_params.data_to_process
+        input_array = global_params.data_to_process[LoadFile.FIRST_ROW_OF_ELEMENT:]
         global_params.data_without_encode = global_params.data_to_process[:LoadFile.FIRST_ROW_OF_ELEMENT]
         
         features = []
@@ -30,19 +33,22 @@ class EncodeData(PipelineAlgorithmInterface):
         for future in futures:
             results += future.result()[0]
 
-        global_params.data_to_process = results
+        global_params.data_to_process = global_params.data_without_encode + results
 
     @classmethod
     def sub_encode_array(cls, input_array, features = []):
         output_array = []
-        for element in input_array:
+        for index, element in enumerate(input_array):
             if isinstance(element, list):
                 output_element = cls.sub_encode_array(element, features)[0]
                 output_array.append(output_element)
-            
             else:
-                if element not in features:
-                    features.append(element)
-                output_array.append(features.index(element))
+                if index < EncodeData.FIRST_COLUMN_TO_ENCODE:
+                    output_array.append(element)
+
+                else:
+                    if element not in features:
+                        features.append(element)
+                    output_array.append(features.index(element))
         
         return (output_array, features)
