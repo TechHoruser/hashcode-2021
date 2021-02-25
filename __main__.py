@@ -7,6 +7,7 @@ from pipeline.algorithms.save_file import SaveFile
 from pipeline.algorithms.load_encoded_file import LoadEncodedFile
 from pipeline.algorithms.encode_data import EncodeData
 from pipeline.algorithms.save_encoded_data_to_file import SaveEncodedDataToFile
+from pipeline.algorithms.set_indexes import SetIndexes
 from pipeline.algorithms.basic import Basic
 
 load_pipeline = SubPipeline(
@@ -15,31 +16,42 @@ load_pipeline = SubPipeline(
         SubPipeline([LoadFile, EncodeData, SaveEncodedDataToFile])
     ], True
 )
+load_pipeline = SubPipeline(
+    [LoadFile]
+)
 
 pipelines = [
     Pipeline([
         load_pipeline,
+        SetIndexes,
         Basic,
         SaveFile,
     ], GlobalAlgoritmParams(filename = "a_example")),
     Pipeline([
         load_pipeline,
+        SetIndexes,
+        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "b_little_bit_of_everything")),
+    ], GlobalAlgoritmParams(filename = "b_little_bit_of_everything", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
+        SetIndexes,
+        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "c_many_ingredients")),
+    ], GlobalAlgoritmParams(filename = "c_many_ingredients", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
+        SetIndexes,
+        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "d_many_pizzas")),
+    ], GlobalAlgoritmParams(filename = "d_many_pizzas", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
-        # SetNewSubgroupProcess,
+        SetIndexes,
+        SetNewSubgroupProcess,
         Basic,
         SaveFile,
     ], GlobalAlgoritmParams(filename = "e_many_teams", test_group_percent=.1)),
@@ -49,9 +61,11 @@ pipelines = [
 for indx, pipeline in enumerate(pipelines):
     start_datetime = datetime.now()
     print(
-        "Processing file:",
-        pipeline.global_algorithm_params.filename,
-        "(" + str(indx + 1) + "/" + str(len(pipelines)) + ")",
+        "Processing file: \033[92m%s\033[0m(%d/%d)" % (
+            pipeline.global_algorithm_params.filename,
+            indx + 1,
+            len(pipelines),
+        ),
         flush=False,
     )
     print("Start at: %s" % start_datetime.strftime('%H:%M:%S'))
@@ -59,4 +73,4 @@ for indx, pipeline in enumerate(pipelines):
     pipeline.execute()
 
     end_datetime = datetime.now()
-    print("End at: %s (%s)" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)))
+    print("End at: %s (%s)\n\n" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)))

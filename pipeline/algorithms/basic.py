@@ -5,10 +5,7 @@ class Basic(PipelineAlgorithmInterface):
     @classmethod
     def execute(cls, global_params: GlobalAlgoritmParams):
         _,number_of_two_person_teams,number_of_three_person_teams,number_of_four_person_teams = global_params.data_without_encode[0]
-        array_of_pizzas = [{
-            'index': index,
-            'ingredients': pizza_row[1:],
-        } for index, pizza_row in enumerate(global_params.data_to_process)]
+        array_of_pizzas = global_params.data_to_process
 
         result = []
         for _ in range(number_of_two_person_teams):

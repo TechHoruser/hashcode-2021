@@ -21,13 +21,13 @@ class Pipeline:
                     sub_pipeline = Pipeline(algorithm.algorithms, self.global_algorithm_params, algorithm.disjunctive)
                     sub_pipeline.execute()
                 else:
-                    print("Process: ", algorithm)
+                    print("\033[96m%s\033[0m" % algorithm, end='')
                     start_datetime = datetime.now()
-                    print("Start at: %s" % start_datetime.strftime('%H:%M:%S'))
+                    print(" ==> \033[34m%s" % start_datetime.strftime('%H:%M:%S'), end='')
                     algorithm.execute(self.global_algorithm_params)
                     end_datetime = datetime.now()
-                    print("End at: %s (%s)" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)))
-                    
+                    print(" - %s (%s)\033[0m" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)), flush=True)
+                
                 if self.disjunctive:
                     return
             
