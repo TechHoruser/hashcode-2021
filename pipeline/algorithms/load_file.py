@@ -17,7 +17,7 @@ class LoadFile(PipelineAlgorithmInterface):
         ) as f:
             content = f.readlines()
 
-        global_params.data_to_process = [
+        all_data = [
             numpy.array((line.replace("\n", "")).strip().split(LoadFile.SEPARATOR))
             .astype(
                 LoadFile.ELEMENT_TYPE_FIRST_LINE
@@ -27,3 +27,6 @@ class LoadFile(PipelineAlgorithmInterface):
             .tolist()
             for idx, line in enumerate(content)
         ]
+
+        global_params.data_without_encode = all_data[:LoadFile.FIRST_ROW_OF_ELEMENT]
+        global_params.data_to_process = all_data[LoadFile.FIRST_ROW_OF_ELEMENT:]
