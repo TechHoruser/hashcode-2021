@@ -5,8 +5,12 @@ name = "pypi"
 
 [packages]
 numpy = "*"
+typing = "*"
+pydantic = "*"
 
 [dev-packages]
+pylint = "*"
+rope = "*"
 
 [requires]
 python_version = "3.9"

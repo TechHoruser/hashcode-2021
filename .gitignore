@@ -2,5 +2,6 @@
 venv/
 **/__pycache__/
 data/out/*.out
+data/in/*.encoded
 
 hascode\.zip
