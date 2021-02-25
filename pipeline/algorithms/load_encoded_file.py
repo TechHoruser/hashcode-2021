@@ -1,6 +1,7 @@
 import numpy
 from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
 from pipeline.global_algoritm_params import GlobalAlgoritmParams
+from pipeline.algorithms.load_file import LoadFile
 
 class LoadEncodedFile(PipelineAlgorithmInterface):
     INPUT_PATH = "./data/in/"
@@ -16,7 +17,7 @@ class LoadEncodedFile(PipelineAlgorithmInterface):
         ) as f:
             content = f.readlines()
 
-        global_params.data_to_process = [
+        all_data = [
             numpy.array((line.replace("\n", "")).strip().split(LoadEncodedFile.SEPARATOR))
             .astype(
                 LoadEncodedFile.ELEMENT_TYPE_FIRST_LINE
@@ -26,3 +27,6 @@ class LoadEncodedFile(PipelineAlgorithmInterface):
             .tolist()
             for idx, line in enumerate(content)
         ]
+
+        global_params.data_without_encode = all_data[:LoadFile.FIRST_ROW_OF_ELEMENT]
+        global_params.data_to_process = all_data[LoadFile.FIRST_ROW_OF_ELEMENT:]

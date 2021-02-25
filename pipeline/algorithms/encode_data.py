@@ -10,8 +10,7 @@ class EncodeData(PipelineAlgorithmInterface):
     @classmethod
     def execute(cls, global_params: GlobalAlgoritmParams):
         number_of_threads = global_params.number_of_threads
-        input_array = global_params.data_to_process[LoadFile.FIRST_ROW_OF_ELEMENT:]
-        global_params.data_without_encode = global_params.data_to_process[:LoadFile.FIRST_ROW_OF_ELEMENT]
+        input_array = global_params.data_to_process
         
         features = []
         executor = ThreadPoolExecutor(number_of_threads)
@@ -33,7 +32,7 @@ class EncodeData(PipelineAlgorithmInterface):
         for future in futures:
             results += future.result()[0]
 
-        global_params.data_to_process = global_params.data_without_encode + results
+        global_params.data_to_process = results
 
     @classmethod
     def sub_encode_array(cls, input_array, features = []):
