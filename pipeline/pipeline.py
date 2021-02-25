@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime
 from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
 from pipeline.global_algoritm_params import GlobalAlgoritmParams
 
@@ -21,7 +22,11 @@ class Pipeline:
                     sub_pipeline.execute()
                 else:
                     print("Process: ", algorithm)
+                    start_datetime = datetime.now()
+                    print("Start at: %s" % start_datetime.strftime('%H:%M:%S'))
                     algorithm.execute(self.global_algorithm_params)
+                    end_datetime = datetime.now()
+                    print("End at: %s (%s)" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)))
                     
                 if self.disjunctive:
                     return
@@ -32,6 +37,7 @@ class Pipeline:
         
         if self.disjunctive:
             raise Exception('No complete any process')
+
 
 class SubPipeline:
     def __init__(
