@@ -1,14 +1,14 @@
 from datetime import datetime
 from pipeline.pipeline import Pipeline, SubPipeline
-from pipeline.global_algoritm_params import GlobalAlgoritmParams
-from pipeline.algorithms.load_file import LoadFile
-from pipeline.algorithms.set_new_subgroup_process_data import SetNewSubgroupProcess
-from pipeline.algorithms.save_file import SaveFile
-from pipeline.algorithms.load_encoded_file import LoadEncodedFile
-from pipeline.algorithms.encode_data import EncodeData
-from pipeline.algorithms.save_encoded_data_to_file import SaveEncodedDataToFile
-from pipeline.algorithms.set_indexes import SetIndexes
-from pipeline.algorithms.basic import Basic
+from pipeline.global_params import GlobalParams
+from pipeline.pipeline_processes.load_file import LoadFile
+from pipeline.pipeline_processes.set_new_subgroup_process_data import SetNewSubgroupProcess
+from pipeline.pipeline_processes.save_file import SaveFile
+from pipeline.pipeline_processes.load_encoded_file import LoadEncodedFile
+from pipeline.pipeline_processes.encode_data import EncodeData
+from pipeline.pipeline_processes.save_encoded_data_to_file import SaveEncodedDataToFile
+from pipeline.pipeline_processes.set_indexes import SetIndexes
+from pipeline.pipeline_processes.basic import Basic
 
 load_pipeline = SubPipeline(
     [
@@ -23,46 +23,42 @@ load_pipeline = SubPipeline(
 pipelines = [
     Pipeline([
         load_pipeline,
-        SetIndexes,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "a_example")),
+    ], GlobalParams(filename = "a")),
     Pipeline([
         load_pipeline,
-        SetIndexes,
-        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "b_little_bit_of_everything", test_group_percent=.1)),
+    ], GlobalParams(filename = "b", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
-        SetIndexes,
-        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "c_many_ingredients", test_group_percent=.1)),
+    ], GlobalParams(filename = "c", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
-        SetIndexes,
-        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "d_many_pizzas", test_group_percent=.1)),
+    ], GlobalParams(filename = "d", test_group_percent=.1)),
     Pipeline([
         load_pipeline,
-        SetIndexes,
-        SetNewSubgroupProcess,
         Basic,
         SaveFile,
-    ], GlobalAlgoritmParams(filename = "e_many_teams", test_group_percent=.1)),
+    ], GlobalParams(filename = "e", test_group_percent=.1)),
+    Pipeline([
+        load_pipeline,
+        Basic,
+        SaveFile,
+    ], GlobalParams(filename = "f", test_group_percent=.1)),
 ]
 
 
 for indx, pipeline in enumerate(pipelines):
     start_datetime = datetime.now()
     print(
-        "Processing file: \033[92m%s\033[0m(%d/%d)" % (
-            pipeline.global_algorithm_params.filename,
+        "Processing file: \033[92m%s (%d/%d)\033[0m" % (
+            pipeline.global_params.filename,
             indx + 1,
             len(pipelines),
         ),

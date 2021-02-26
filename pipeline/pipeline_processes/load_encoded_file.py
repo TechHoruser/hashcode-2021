@@ -1,9 +1,9 @@
 import numpy
-from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
-from pipeline.global_algoritm_params import GlobalAlgoritmParams
-from pipeline.algorithms.load_file import LoadFile
+from pipeline.pipeline_processes.pipeline_process_interface import PipelineProcessInterface
+from pipeline.global_params import GlobalParams
+from pipeline.pipeline_processes.load_file import LoadFile
 
-class LoadEncodedFile(PipelineAlgorithmInterface):
+class LoadEncodedFile(PipelineProcessInterface):
     INPUT_PATH = "./data/in/"
     INPUT_EXTENSION = ".encoded"
     SEPARATOR = " "
@@ -11,7 +11,7 @@ class LoadEncodedFile(PipelineAlgorithmInterface):
     ELEMENT_TYPE_OTHER_LINES = int
 
     @classmethod
-    def execute(cls, global_params: GlobalAlgoritmParams):
+    def execute(cls, global_params: GlobalParams):
         with open(
             LoadEncodedFile.INPUT_PATH + global_params.filename + LoadEncodedFile.INPUT_EXTENSION
         ) as f:

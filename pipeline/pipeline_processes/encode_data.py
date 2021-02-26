@@ -1,14 +1,14 @@
 from concurrent.futures import ThreadPoolExecutor 
-from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
-from pipeline.algorithms.load_file import LoadFile
-from pipeline.global_algoritm_params import GlobalAlgoritmParams
+from pipeline.pipeline_processes.pipeline_process_interface import PipelineProcessInterface
+from pipeline.pipeline_processes.load_file import LoadFile
+from pipeline.global_params import GlobalParams
 
-class EncodeData(PipelineAlgorithmInterface):
+class EncodeData(PipelineProcessInterface):
 
     FIRST_COLUMN_TO_ENCODE = 1
 
     @classmethod
-    def execute(cls, global_params: GlobalAlgoritmParams):
+    def execute(cls, global_params: GlobalParams):
         number_of_threads = global_params.number_of_threads
         input_array = global_params.data_to_process
         

@@ -1,13 +1,13 @@
 import numpy
-from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
-from pipeline.global_algoritm_params import GlobalAlgoritmParams
+from pipeline.pipeline_processes.pipeline_process_interface import PipelineProcessInterface
+from pipeline.global_params import GlobalParams
 
-class SaveEncodedDataToFile(PipelineAlgorithmInterface):
+class SaveEncodedDataToFile(PipelineProcessInterface):
     OUTPUT_PATH = "./data/in/"
     OUTPUT_EXTENSION = ".encoded"
 
     @classmethod
-    def execute(cls, global_params: GlobalAlgoritmParams):
+    def execute(cls, global_params: GlobalParams):
         data_to_export = global_params.data_without_encode + global_params.data_to_process
 
         data = [

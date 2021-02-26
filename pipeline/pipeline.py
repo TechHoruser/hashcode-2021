@@ -1,30 +1,30 @@
 from typing import List
 from datetime import datetime
-from pipeline.algorithms.pipeline_algorithm_interface import PipelineAlgorithmInterface
-from pipeline.global_algoritm_params import GlobalAlgoritmParams
+from pipeline.pipeline_processes.pipeline_process_interface import PipelineProcessInterface
+from pipeline.global_params import GlobalParams
 
 class Pipeline:
     def __init__(
         self,
-        algorithms: List[PipelineAlgorithmInterface],
-        global_algorithm_params: GlobalAlgoritmParams,
+        processes: List[PipelineProcessInterface],
+        global_params: GlobalParams,
         disjunctive: bool = False
     ):
-        self.algorithms = algorithms
-        self.global_algorithm_params = global_algorithm_params
+        self.processes = processes
+        self.global_params = global_params
         self.disjunctive = disjunctive
     
     def execute(self):
-        for algorithm in self.algorithms:
+        for algorithm in self.processes:
             try:
                 if isinstance(algorithm, SubPipeline):
-                    sub_pipeline = Pipeline(algorithm.algorithms, self.global_algorithm_params, algorithm.disjunctive)
+                    sub_pipeline = Pipeline(algorithm.processes, self.global_params, algorithm.disjunctive)
                     sub_pipeline.execute()
                 else:
                     print("\033[96m%s\033[0m" % algorithm, end='')
                     start_datetime = datetime.now()
-                    print(" ==> \033[34m%s" % start_datetime.strftime('%H:%M:%S'), end='')
-                    algorithm.execute(self.global_algorithm_params)
+                    print(" => \033[34m%s" % start_datetime.strftime('%H:%M:%S'), end='')
+                    algorithm.execute(self.global_params)
                     end_datetime = datetime.now()
                     print(" - %s (%s)\033[0m" % (end_datetime.strftime('%H:%M:%S'), str(end_datetime-start_datetime)), flush=True)
                 
@@ -42,10 +42,10 @@ class Pipeline:
 class SubPipeline:
     def __init__(
         self,
-        algorithms: List[PipelineAlgorithmInterface],
+        processes: List[PipelineProcessInterface],
         disjunctive: bool = False
     ):
-        self.algorithms = algorithms
+        self.processes = processes
         self.disjunctive = disjunctive
 
         
